@@ -1,0 +1,14 @@
+insert into location (element_ids, name) values ('1,7,9,10,12,13,17','Berry Forest');
+insert into location (element_ids, name) values ('7,8,15','Bond Bridge');
+insert into location (element_ids, name) values ('4,10,15,16','Canyon Entrance');
+insert into location (element_ids, name) values ('5,9,13,14,17','Cape Brink');
+insert into location (element_ids, name) values ('4,6,12,16','Celadon City');
+insert into location (element_ids, name) values ('2,3,6,15','Cerulean Cave');
+insert into location (element_ids, name) values ('1,4,5,13,17','Cinnabar Island');
+insert into location (element_ids, name) values ('2,6,10,15','Diglett''s Cave');
+insert into location (element_ids, name) values ('2,3,11','Five Island');
+insert into location (element_ids, name) values ('10,11,15','Icefall Cave');
+insert into location (element_ids, name) values ('2,8,14','Lost Cave');
+insert into location (element_ids, name) values ('4,6,14,16','Power Plant');
+insert into location (element_ids, name) values ('1,5,9,12,13,17','Ruin Valley');
+insert into location (element_ids, name) values ('7,9,10,12,15','Seavault Canyon');

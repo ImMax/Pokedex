@@ -1,0 +1,17 @@
+insert into element (pic_name, name) values ('bug.png', 'Bug');
+insert into element (pic_name, name) values ('dark.png', 'Dark');
+insert into element (pic_name, name) values ('dragon.png', 'Dragon');
+insert into element (pic_name, name) values ('electric.png', 'Electric');
+insert into element (pic_name, name) values ('fighting.png', 'Fighting');
+insert into element (pic_name, name) values ('fire.png', 'Fire');
+insert into element (pic_name, name) values ('flying.png', 'Flying');
+insert into element (pic_name, name) values ('ghost.png', 'Ghost');
+insert into element (pic_name, name) values ('grass.png', 'Grass');
+insert into element (pic_name, name) values ('ground.png', 'Ground');
+insert into element (pic_name, name) values ('ice.png', 'Ice');
+insert into element (pic_name, name) values ('normal.png', 'Normal');
+insert into element (pic_name, name) values ('poison.png', 'Poison');
+insert into element (pic_name, name) values ('psychic.png', 'Psychic');
+insert into element (pic_name, name) values ('rock.png', 'Rock');
+insert into element (pic_name, name) values ('steel.png', 'Steel');
+insert into element (pic_name, name) values ('water.png', 'Water');
