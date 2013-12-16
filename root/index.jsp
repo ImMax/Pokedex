@@ -1,12 +1,9 @@
 <%@ page import="pokedex.PokedexDB" %>
 <%@ page import="pokedex.Pokemon" %>
 <%@ page import="pokedex.Element" %>
-<%@ page import="java.util.Arrays" %>
-<%@ page import="java.util.Map" %>
-<%@ page import="java.util.HashMap" %>
-<%@ page import="java.util.List" %>
+<%@ page import="java.util.*" %>
 <%!
-    public String output(List<Pokemon> list) {
+    public String outputPokemons(List<Pokemon> list) {
         String s = "<form id='tralala' action='/index.jsp' method='post'>";
         for (Pokemon pokemon : list) {
             s += "<button type='submit' name='pokemon_name' value='" + pokemon.getName() + "'><img src='/images/pokemon/ico/" + pokemon.getPicName() + "'/><br/>" + pokemon.getName() + "</button>";
@@ -63,7 +60,7 @@
                                                return arr.lastIndexOf(e) === i;
                                            });
                 if (values.length != unique.length)
-                    alert("RICH BEAAATCH!!!");
+                    alert("Filters must be unique!");
                 else
                     document.getElementById(select).submit();
             }
@@ -91,10 +88,10 @@
                             res += "select" + i + ": " + Arrays.toString(str.get("select" + i));
                             map.put(Arrays.toString(str.get("select" + i)).replaceAll("\\[", "").replaceAll("\\]",""), Arrays.toString(str.get("search" + i)).replaceAll("\\[", "").replaceAll("\\]",""));
                         }
-                        PokedexDB searcher = PokedexDB.getInstance("jdbc:h2:pokedex");
-                        List<Pokemon> list = searcher.searchPokemon(map);
+                        PokedexDB pokedexDB = PokedexDB.getInstance("jdbc:h2:pokedex");
+                        List<Pokemon> list = pokedexDB.searchPokemon(map);
                     %>
-                    <%= output(list) %>
+                    <%= outputPokemons(list) %>
                     <!-- <img class="start_img" src="images/matreshka.png"/> -->
                 </td>
 
@@ -102,16 +99,47 @@
                     <%
                         String nameArg = request.getParameter("pokemon_name");
                         if (nameArg == null || nameArg.isEmpty()) return;
-                        Pokemon pokemon = searcher.searchByName(nameArg);
-                        List<Element> types = searcher.searchElementById(pokemon.getElementIds());
-                        List<Element> weaknesses = searcher.searchElementById(pokemon.getWeaknessesIds());
+                        Pokemon pokemon = pokedexDB.searchByName(nameArg);
+                        List<Element> types = pokedexDB.searchElementById(pokemon.getElementIds());
+                        List<Element> weaknesses = pokedexDB.searchElementById(pokemon.getWeaknessesIds());
+                        char gender = pokemon.getGender();
+                        int height =  pokemon.getHeight();
+                        int weight = pokemon.getWeight();
+                        String species = pokedexDB.getSpeciesById(pokemon.getSpeciesId());
+                        Set<String> locations = pokedexDB.getPossibleLocations(types);
+                        List<Pokemon> evols = pokedexDB.getPokemonsByEvolutionId(pokemon.getEvolutionId());
+                        List<String> abilities = pokedexDB.getAbilitiesByPokemonId(pokemon.getId());
                     %>
-                    <h1><%= pokemon.getName() %></h1>
-                    <%= "<img src='/images/pokemon/pic/" + pokemon.getPicName() + "'/>" %>
-                    <h2>Type:</h2>
-                    <%= outputElements(types) %>
-                    <h2>Weaknesses:</h2>
-                    <%= outputElements(weaknesses) %>
+                    <table cellpadding="10">
+                        <tr>
+                            <td>
+                                <h1><%= pokemon.getName() %></h1>
+                                <%= "<img src='/images/pokemon/pic/" + pokemon.getPicName() + "'/>" %>
+                                <h2>Type:</h2>
+                                <%= outputElements(types) %>
+                                <h2>Weaknesses:</h2>
+                                <%= outputElements(weaknesses) %>
+                            </td>
+                            <td>
+                                <div>
+                                    <b>Species: </b> <%= species %>
+                                </div>
+                                <div>
+                                    <b>Gender: </b> <%= (gender == 'a' ? "Both" : gender == 'm' ? "Male only" : "Female only") + ", " %>
+                                    <b>Height: </b> <%= height + "ft"  + ", " %>
+                                    <b>Weight: </b> <%= weight + "lbs "%>
+                                </div>
+                                <div>
+                                    <b>Locations: </b> <%= locations.toString().replace("[","").replace("]", "") %>
+                                </div>
+                                <div>
+                                    <b>Abilities: </b> <%= abilities.toString().replace("[","").replace("]", "") %>
+                                </div>
+                                <b>Evolutions:</b>
+                                <%= outputPokemons(evols) %>
+                            </td>
+                        </tr>
+                    </table>
                 </td>
             </tr>
         </table>

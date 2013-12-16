@@ -22,4 +22,13 @@ public final class Element {
     public String getName() {
         return name;
     }
+
+    @Override
+    public String toString() {
+        return "Element{" +
+                "id=" + id +
+                ", picName='" + picName + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

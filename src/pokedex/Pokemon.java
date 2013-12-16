@@ -2,8 +2,8 @@ package pokedex;
 
 public final class Pokemon {
     private final int id;
-    private final int evalutionId;
-    private final int spiciesId;
+    private final int evolutionId;
+    private final int speciesId;
     private final String picName;
     private final String abilityIds;
     private final String elementIds;
@@ -14,12 +14,12 @@ public final class Pokemon {
     private final int weight;
     private final int lvl;
 
-    public Pokemon(final int id, final int evalutionId, final int spiciesId, final String picName,
+    public Pokemon(final int id, final int evolutionId, final int speciesId, final String picName,
                    final String abilityIds, final String elementIds, final String weaknessesIds, final String name,
                    final char gender, final int height, final int weight, final int lvl) {
         this.id = id;
-        this.evalutionId = evalutionId;
-        this.spiciesId = spiciesId;
+        this.evolutionId = evolutionId;
+        this.speciesId = speciesId;
         this.picName = picName;
         this.abilityIds = abilityIds;
         this.elementIds = elementIds;
@@ -35,12 +35,12 @@ public final class Pokemon {
         return id;
     }
 
-    public int getEvalutionId() {
-        return evalutionId;
+    public int getEvolutionId() {
+        return evolutionId;
     }
 
-    public int getSpiciesId() {
-        return spiciesId;
+    public int getSpeciesId() {
+        return speciesId;
     }
 
     public String getPicName() {
@@ -77,5 +77,23 @@ public final class Pokemon {
 
     public int getLvl() {
         return lvl;
+    }
+
+    @Override
+    public String toString() {
+        return "Pokemon{" +
+                "id=" + id +
+                ", evolutionId=" + evolutionId +
+                ", speciesId=" + speciesId +
+                ", picName='" + picName + '\'' +
+                ", abilityIds='" + abilityIds + '\'' +
+                ", elementIds='" + elementIds + '\'' +
+                ", weaknessesIds='" + weaknessesIds + '\'' +
+                ", name='" + name + '\'' +
+                ", gender=" + gender +
+                ", height=" + height +
+                ", weight=" + weight +
+                ", lvl=" + lvl +
+                '}';
     }
 }
