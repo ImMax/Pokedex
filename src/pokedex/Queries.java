@@ -22,7 +22,8 @@ public final class Queries {
         map.put("level", LVL);
     }
 
-    private Queries() {}
+    private Queries() {
+    }
 
     public static final String GET_ALL_POKEMONS =
             "select id, evolution_id, species_id, pic_name, ability_ids, element_ids, weaknesses_ids, " +
@@ -47,8 +48,8 @@ public final class Queries {
                     "name, gender, height, weight, lvl from pokemon " +
                     "where evolution_id=?";
 
-    public static final String GET_ALL_ABILITIES =  // TODO: изменить
-            "select id, name from ability";
+    public static final String GET_ALL_ABILITIES =
+            "select id, element_id, name from ability";
 
     public static final String FIND_ABILITY_BY_NAME =
             "select id, element_id, name from ability where name=?";

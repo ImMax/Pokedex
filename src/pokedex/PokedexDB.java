@@ -6,12 +6,10 @@ import java.util.*;
 public class PokedexDB {
     private static PokedexDB INSTANCE = null;
     private Connection connection = null;
-    private static List<String> secondaryParamList = Arrays.asList("ability","type","weakness");
-    public static String DEBUG = "";
+    private static List<String> secondaryParamList = Arrays.asList("ability", "type", "weakness");
 
     private PokedexDB(String url) throws ClassNotFoundException, SQLException {
         Class.forName("org.h2.Driver");
-//        connection = DriverManager.getConnection("jdbc:h2:pokedex", "sa", "");
         connection = DriverManager.getConnection(url, "sa", "");
     }
 
@@ -29,22 +27,33 @@ public class PokedexDB {
     }
 
     private void capitalizeMap(Map<String, String> map) {
-            for (Map.Entry<String, String> e : map.entrySet()) {
-                String val = e.getValue();
-                if (val != null)
-                    e.setValue(capitalize(val));
-            }
+        for (Map.Entry<String, String> e : map.entrySet()) {
+            String val = e.getValue();
+            if (val != null)
+                e.setValue(capitalize(val));
+        }
     }
 
     private String capitalize(String original) {
-        return original.length() == 0 ? original : original.substring(0, 1).toUpperCase() + original.substring(1).toLowerCase();
+        String result = original;
+        if (original.length() > 1) {
+            String[] words = original.split(" ");
+            result = "";
+            for (String word : words) {
+                result += word.length() == 0 ? word : word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase() + " ";
+            }
+            if (result.length() != 0) {
+                result = result.substring(0, result.length() - 1);
+            }
+        }
+        return result;
     }
 
     public List<Pokemon> searchPokemon(Map<String, String> param) throws SQLException {
         capitalizeMap(param);
         PreparedStatement statement = null;
         List<Pokemon> pokemonList = new ArrayList<>();
-        Map<String,String> secondaryParam = new HashMap<>();
+        Map<String, String> secondaryParam = new HashMap<>();
         try {
             for (String str : secondaryParamList) {
                 if (param.containsKey(str)) {
@@ -54,8 +63,8 @@ public class PokedexDB {
             String query = Queries.searchPokemon(param);
             statement = connection.prepareStatement(query);
             List<String> values = new ArrayList<>(param.values());
-            for(int i=1; i <= values.size(); i++)
-                statement.setString(i, values.get(i-1));
+            for (int i = 1; i <= values.size(); i++)
+                statement.setString(i, values.get(i - 1));
             statement.executeQuery();
             ResultSet resultSet = statement.getResultSet();
             while (resultSet.next()) {
@@ -77,7 +86,7 @@ public class PokedexDB {
             if (secondaryParam.containsKey("weakness")) {
                 pokemonList = filterWeakness(pokemonList, secondaryParam.get("weakness"));
             }
-            
+
         } finally {
             if (statement != null) {
                 statement.close();
@@ -94,7 +103,7 @@ public class PokedexDB {
             statement.setString(1, abilityName);
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
-            Ability ability = new Ability(resultSet.getInt(1),resultSet.getInt(2),resultSet.getString(3));
+            Ability ability = new Ability(resultSet.getInt(1), resultSet.getInt(2), resultSet.getString(3));
             resultSet.close();
             for (Pokemon pokemon : list) {
                 String[] pokemonAbilities = pokemon.getAbilityIds().split(",");
@@ -122,7 +131,7 @@ public class PokedexDB {
             statement.setString(1, typeName);
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
-            Element element = new Element(resultSet.getInt(1),resultSet.getString(2),resultSet.getString(3));
+            Element element = new Element(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3));
             for (Pokemon pokemon : list) {
                 String[] pokemonElements = pokemon.getElementIds().split(",");
                 for (String str : pokemonElements) {
@@ -149,7 +158,7 @@ public class PokedexDB {
             statement.setString(1, weakness);
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
-            Element element = new Element(resultSet.getInt(1),resultSet.getString(2),resultSet.getString(3));
+            Element element = new Element(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3));
             resultSet.close();
             for (Pokemon pokemon : list) {
                 String[] pokemonElements = pokemon.getWeaknessesIds().split(",");
@@ -186,7 +195,7 @@ public class PokedexDB {
         try {
             List<Element> elements = new ArrayList<>();
             statement = connection.prepareStatement(Queries.FIND_ELEMENT_BY_ID);
-            for(String id : idStr.split(",")){
+            for (String id : idStr.split(",")) {
                 statement.setInt(1, Integer.parseInt(id));
                 ResultSet resultSet = statement.executeQuery();
                 resultSet.next();
@@ -205,7 +214,7 @@ public class PokedexDB {
         try {
             String speciesName;
             statement = connection.prepareStatement(Queries.FIND_SPECIES_BY_ID);
-            statement.setInt(1,speciesId);
+            statement.setInt(1, speciesId);
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
             speciesName = resultSet.getString(1);
@@ -222,7 +231,6 @@ public class PokedexDB {
         try {
             List<Location> locationList = new ArrayList<>();
             Set<String> locationSet = new HashSet<>();
-//            String locations = "";
             statement = connection.prepareStatement(Queries.GET_ALL_LOCATIONS);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -233,17 +241,13 @@ public class PokedexDB {
                 for (String elementFromLocation : element_ids) {
                     for (Element element : elementList) {
                         if (element.getId() == Integer.parseInt(elementFromLocation)) {
-//                            locations += location.getName() + ", ";
                             locationSet.add(location.getName());
                         }
                     }
                 }
             }
 
-//            locations = locations.substring(0,locations.length()-2);
-
             resultSet.close();
-//            return locations;
             return locationSet;
         } finally {
             if (statement != null)
@@ -264,6 +268,18 @@ public class PokedexDB {
                         resultSet.getString(9).charAt(0), resultSet.getInt(10), resultSet.getInt(11), resultSet.getInt(12)));
             }
             resultSet.close();
+            Collections.sort(pokemonList, new Comparator<Pokemon>() {
+                @Override
+                public int compare(Pokemon o1, Pokemon o2) {
+                    if (o1.getLvl() > o2.getLvl()) {
+                        return 1;
+                    } else if (o1.getLvl() < o2.getLvl()) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                }
+            });
             return pokemonList;
         } finally {
             if (statement != null)
@@ -271,29 +287,29 @@ public class PokedexDB {
         }
     }
 
-    public List<String> getAbilitiesByPokemonId(int pokemonId) throws SQLException {
-        Map<String,String> params = new HashMap<>();
+    public List<Ability> getAbilitiesByPokemonId(int pokemonId) throws SQLException {
+        Map<String, String> params = new HashMap<>();
         params.put("id", String.valueOf(pokemonId));
         Pokemon pokemon = searchPokemon(params).get(0);
-        Map<Integer,String> map = new HashMap<>();
-        List<String> abilities = new ArrayList<>();
+        List<Ability> allAbilities = new ArrayList<>();
+        List<Ability> pokemonAbilities = new ArrayList<>();
         PreparedStatement statement = null;
         try {
             statement = connection.prepareStatement(Queries.GET_ALL_ABILITIES);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                map.put(resultSet.getInt(1),resultSet.getString(2));
+                allAbilities.add(new Ability(resultSet.getInt(1), resultSet.getInt(2), resultSet.getString(3)));
             }
             String[] abilityIds = pokemon.getAbilityIds().split(",");
-            for (int abilityId : map.keySet()) {
+            for (Ability ability : allAbilities) {
                 for (String abilityStringId : abilityIds) {
-                    if (abilityId == Integer.parseInt(abilityStringId)) {
-                        abilities.add(map.get(abilityId));
+                    if (ability.getId() == Integer.parseInt(abilityStringId)) {
+                        pokemonAbilities.add(ability);
                     }
                 }
             }
 
-            return abilities;
+            return pokemonAbilities;
         } finally {
             if (statement != null)
                 statement.close();

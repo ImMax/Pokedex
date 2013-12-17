@@ -20,7 +20,7 @@ img{
 input.main_input{
     display: block;
     margin-right: auto;
-    margin-left: auto;
+    margin-left: 0;
     border: 2px solid #FF6F00;
     border-radius: 10px;
 }
@@ -34,6 +34,11 @@ input.main_input:focus{
 img.element{
     width: 40px;
     height: 40px;
+}
+
+img.smallElement{
+    width: 20px;
+    height: 20px;
 }
 
 table.main_table{
