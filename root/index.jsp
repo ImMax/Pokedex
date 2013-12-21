@@ -8,7 +8,7 @@
     public String outputPokemons(List<Pokemon> list) {
         String s = "<form id='tralala' action='/index.jsp' method='post'>";
         for (Pokemon pokemon : list) {
-            s += "<button class='pokemon_button' type='submit' name='pokemon_name' value='" + pokemon.getName() + "'><img src='/images/pokemon/ico/" + pokemon.getPicName() + "'/><br/></button>";
+            s += "<button class='pokemon_button' type='submit' name='pokemon_name' value='" + pokemon.getName() + "'><img height='96' width='96'  src='/images/pokemon/ico/" + pokemon.getPicName() + "'/><br/></button>";
         }
         s += "</form>";
         return s;
@@ -177,7 +177,7 @@
                         <tr>
                             <td>
                                 <h1><%= pokemon.getName() %></h1>
-                                <%= "<img src='/images/pokemon/pic/" + pokemon.getPicName() + "'/>" %>
+                                <%= "<img height='250' width='250' src='/images/pokemon/pic/" + pokemon.getPicName() + "'/>" %>
                                 <h2>Type:</h2>
                                 <%= outputElements(types) %>
                                 <h2>Weaknesses:</h2>
