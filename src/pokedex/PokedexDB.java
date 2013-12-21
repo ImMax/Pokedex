@@ -5,12 +5,20 @@ import java.util.*;
 
 public class PokedexDB {
     private static PokedexDB INSTANCE = null;
-    private Connection connection = null;
+    private String url;
     private static List<String> secondaryParamList = Arrays.asList("ability", "type", "weakness");
 
     private PokedexDB(String url) throws ClassNotFoundException, SQLException {
         Class.forName("org.h2.Driver");
-        connection = DriverManager.getConnection(url, "sa", "");
+        this.url = url;
+    }
+
+    private void close(Connection connection) throws SQLException {
+        if (connection != null && !connection.isClosed()) connection.close();
+    }
+
+    private Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(url, "sa", "");
     }
 
     public static PokedexDB getInstance(String url) throws SQLException, ClassNotFoundException {
@@ -50,11 +58,13 @@ public class PokedexDB {
     }
 
     public List<Pokemon> searchPokemon(Map<String, String> param) throws SQLException {
+        Connection connection = null;
         capitalizeMap(param);
         PreparedStatement statement = null;
         List<Pokemon> pokemonList = new ArrayList<>();
         Map<String, String> secondaryParam = new HashMap<>();
         try {
+            connection = getConnection();
             for (String str : secondaryParamList) {
                 if (param.containsKey(str)) {
                     secondaryParam.put(str, param.remove(str));
@@ -88,17 +98,17 @@ public class PokedexDB {
             }
 
         } finally {
-            if (statement != null) {
-                statement.close();
-            }
+            close(connection);
         }
         return pokemonList;
     }
 
     public List<Pokemon> filterAbility(List<Pokemon> list, String abilityName) throws SQLException {
+        Connection connection = null;
         PreparedStatement statement = null;
         List<Pokemon> newList = new ArrayList<>();
         try {
+            connection = getConnection();
             statement = connection.prepareStatement(Queries.FIND_ABILITY_BY_NAME);
             statement.setString(1, abilityName);
             ResultSet resultSet = statement.executeQuery();
@@ -116,17 +126,18 @@ public class PokedexDB {
         } catch (SQLException ex) {
             return newList;
         } finally {
-            if (statement != null)
-                statement.close();
+            close(connection);
         }
 
         return newList;
     }
 
     public List<Pokemon> filterType(List<Pokemon> list, String typeName) throws SQLException {
+        Connection connection = null;
         PreparedStatement statement = null;
         List<Pokemon> newList = new ArrayList<>();
         try {
+            connection = getConnection();
             statement = connection.prepareStatement(Queries.FIND_ELEMENT_BY_NAME);
             statement.setString(1, typeName);
             ResultSet resultSet = statement.executeQuery();
@@ -144,16 +155,17 @@ public class PokedexDB {
         } catch (SQLException ex) {
             return newList;
         } finally {
-            if (statement != null)
-                statement.close();
+            close(connection);
         }
         return newList;
     }
 
     public List<Pokemon> filterWeakness(List<Pokemon> list, String weakness) throws SQLException {
+        Connection connection = null;
         PreparedStatement statement = null;
         List<Pokemon> newList = new ArrayList<>();
         try {
+            connection = getConnection();
             statement = connection.prepareStatement(Queries.FIND_WEAKNESS_BY_NAME);
             statement.setString(1, weakness);
             ResultSet resultSet = statement.executeQuery();
@@ -171,28 +183,30 @@ public class PokedexDB {
         } catch (SQLException ex) {
             return newList;
         } finally {
-            if (statement != null)
-                statement.close();
+            close(connection);
         }
         return newList;
     }
 
     public Pokemon searchByName(String name) throws SQLException {
+        Connection connection = null;
         PreparedStatement statement = null;
         try {
+            connection = getConnection();
             statement = connection.prepareStatement(Queries.FIND_POKEMON_BY_NAME);
             statement.setString(1, name);
             ResultSet resultSet = statement.executeQuery();
             return buildPokemon(resultSet);
         } finally {
-            if (statement != null)
-                statement.close();
+            close(connection);
         }
     }
 
     public List<Element> searchElementById(String idStr) throws SQLException {
+        Connection connection = null;
         PreparedStatement statement = null;
         try {
+            connection = getConnection();
             List<Element> elements = new ArrayList<>();
             statement = connection.prepareStatement(Queries.FIND_ELEMENT_BY_ID);
             for (String id : idStr.split(",")) {
@@ -204,14 +218,15 @@ public class PokedexDB {
             }
             return elements;
         } finally {
-            if (statement != null)
-                statement.close();
+            close(connection);
         }
     }
 
     public String getSpeciesById(int speciesId) throws SQLException {
+        Connection connection = null;
         PreparedStatement statement = null;
         try {
+            connection = getConnection();
             String speciesName;
             statement = connection.prepareStatement(Queries.FIND_SPECIES_BY_ID);
             statement.setInt(1, speciesId);
@@ -221,14 +236,15 @@ public class PokedexDB {
             resultSet.close();
             return speciesName;
         } finally {
-            if (statement != null)
-                statement.close();
+            close(connection);
         }
     }
 
     public Set<String> getPossibleLocations(List<Element> elementList) throws SQLException {
+        Connection connection = null;
         PreparedStatement statement = null;
         try {
+            connection = getConnection();
             List<Location> locationList = new ArrayList<>();
             Set<String> locationSet = new HashSet<>();
             statement = connection.prepareStatement(Queries.GET_ALL_LOCATIONS);
@@ -250,14 +266,15 @@ public class PokedexDB {
             resultSet.close();
             return locationSet;
         } finally {
-            if (statement != null)
-                statement.close();
+            close(connection);
         }
     }
 
     public List<Pokemon> getPokemonsByEvolutionId(int evolutionId) throws SQLException {
+        Connection connection = null;
         PreparedStatement statement = null;
         try {
+            connection = getConnection();
             List<Pokemon> pokemonList = new ArrayList<>();
             statement = connection.prepareStatement(Queries.FIND_POKEMONS_BY_EVOLUTION_ID);
             statement.setInt(1, evolutionId);
@@ -282,12 +299,12 @@ public class PokedexDB {
             });
             return pokemonList;
         } finally {
-            if (statement != null)
-                statement.close();
+            close(connection);
         }
     }
 
     public List<Ability> getAbilitiesByPokemonId(int pokemonId) throws SQLException {
+        Connection connection = null;
         Map<String, String> params = new HashMap<>();
         params.put("id", String.valueOf(pokemonId));
         Pokemon pokemon = searchPokemon(params).get(0);
@@ -295,6 +312,7 @@ public class PokedexDB {
         List<Ability> pokemonAbilities = new ArrayList<>();
         PreparedStatement statement = null;
         try {
+            connection = getConnection();
             statement = connection.prepareStatement(Queries.GET_ALL_ABILITIES);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -311,8 +329,7 @@ public class PokedexDB {
 
             return pokemonAbilities;
         } finally {
-            if (statement != null)
-                statement.close();
+            close(connection);
         }
     }
 

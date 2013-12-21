@@ -74,6 +74,7 @@
             <Button fx:id="commit_button" cancelButton="false" defaultButton="false" disable="true" mnemonicParsing="false" onAction="#commit" text="Commit" textAlignment="CENTER" textFill="#cc0000" textOverrun="ELLIPSIS" underline="false" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="140.0" />
             <Button fx:id="all_pokemon" disable="true" mnemonicParsing="false" onAction="#getAllPokemon" text="All Pokemon" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="60.0" />
             <Button id="button" fx:id="add_button" disable="true" mnemonicParsing="false" onAction="#sayHello" text="Add" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="100.0" />
+            <Button fx:id="disconnect_button" disable="true" mnemonicParsing="false" onAction="#disconnectFromDB" text="Disconnect" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="180.0" />
           </children>
         </AnchorPane>
       </children>

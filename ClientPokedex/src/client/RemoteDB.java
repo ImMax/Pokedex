@@ -26,6 +26,11 @@ public class RemoteDB {
         connection = DriverManager.getConnection(URL, "sa", "");
     }
 
+    public void disconnect() throws SQLException {
+        if (connection != null && !connection.isClosed()) connection.close();
+        INSTANCE = null;
+    }
+
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         RemoteDB.getInstance();
     }

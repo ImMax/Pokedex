@@ -25,10 +25,10 @@ public class Controller {
     private static final ObservableList<Pokemon> list = FXCollections.observableArrayList();
     private static RemoteDB db;
     private List<Button> buttons;
-
     public TableView pokemonTable;
 
     public TableColumn evolutionId;
+
     public TableColumn level;
     public TableColumn weight;
     public TableColumn height;
@@ -38,6 +38,7 @@ public class Controller {
     public TableColumn elements;
     public TableColumn abilities;
     public TableColumn speciesId;
+    public Button disconnect_button;
     public Button connect_button;
     public Button commit_button;
     public Button all_pokemon;
@@ -77,7 +78,7 @@ public class Controller {
     }
 
     public void connectToBD(ActionEvent event) {
-        buttons = Arrays.asList(connect_button, commit_button, all_pokemon, add_button);
+        buttons = Arrays.asList(connect_button, commit_button, all_pokemon, add_button, disconnect_button);
         try {
             db = RemoteDB.getInstance();
             for(Button b : buttons) {
@@ -88,6 +89,18 @@ public class Controller {
             showError("SQL Error:" + e.getMessage());
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
+    public void disconnectFromDB(ActionEvent event) {
+        try {
+            db.disconnect();
+            for(Button b : buttons) {
+                if(connect_button.equals(b)) b.setDisable(false);
+                else b.setDisable(true);
+            }
+        } catch (SQLException e) {
+            showError("SQL Error: " + e.getMessage());
         }
     }
 }
