@@ -62,6 +62,7 @@ table.main_table{
 
 td.search{
     width: 20%;
+    vertical-align: top;
 }
 
 td.view{
@@ -70,4 +71,8 @@ td.view{
 
 td.info{
     width: 50%;
+}
+
+lightText {
+    color: #D1D6E7;
 }
