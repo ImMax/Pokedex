@@ -118,7 +118,7 @@
         <title>Pokedex</title>
     </head>
     <body>
-        <a href="/"><img class="start_img" src="images/tumblr_meji19s5no1rjy4k4o1_1280.png"/></a>
+        <a href="/"><img class="start_img" src="images/pokemon.png"/></a>
         <table class="main_table">
             <tr>
                 <td class="search">
