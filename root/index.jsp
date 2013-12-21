@@ -8,7 +8,7 @@
     public String outputPokemons(List<Pokemon> list) {
         String s = "<form id='tralala' action='/index.jsp' method='post'>";
         for (Pokemon pokemon : list) {
-            s += "<button type='submit' name='pokemon_name' value='" + pokemon.getName() + "'><img src='/images/pokemon/ico/" + pokemon.getPicName() + "'/><br/>" + pokemon.getName() + "</button>";
+            s += "<button class='pokemon_button' type='submit' name='pokemon_name' value='" + pokemon.getName() + "'><img src='/images/pokemon/ico/" + pokemon.getPicName() + "'/><br/></button>";
         }
         s += "</form>";
         return s;
@@ -101,6 +101,7 @@
             function checkAndSubmit(select){
                 var i = 1;
                 var values = [];
+                var el = document.getElementById("select1");
                 while(document.getElementById("select" + i)){
                     values[i-1] = document.getElementById("select" + i).value;
                     i++;
@@ -117,7 +118,7 @@
         <title>Pokedex</title>
     </head>
     <body>
-        <a href="/"><img class="start_img" src="images/pokedex.png"/></a>
+        <a href="/"><img class="start_img" src="images/tumblr_meji19s5no1rjy4k4o1_1280.png"/></a>
         <table class="main_table">
             <tr>
                 <td class="search">

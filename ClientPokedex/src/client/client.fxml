@@ -7,7 +7,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<VBox id="sayHello" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1000.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="sample.Controller">
+<VBox id="sayHello" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="client.Controller">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -50,11 +50,12 @@
     </MenuBar>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <children>
-        <TableView fx:id="pokemonTable" prefHeight="-1.0" prefWidth="743.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <TableView fx:id="pokemonTable" prefHeight="-1.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
           <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
           </columnResizePolicy>
           <columns>
+            <TableColumn prefWidth="75.0" text="ID" />
             <TableColumn id="evolutionId" prefWidth="60.0" text="Evolution Id" />
             <TableColumn id="speciesId" prefWidth="60.0" text="Species Id" />
             <TableColumn id="abilities" prefWidth="60.0" text="Abilities" />
@@ -67,7 +68,14 @@
             <TableColumn id="level" prefWidth="60.0" text="Level" />
           </columns>
         </TableView>
-        <Button fx:id="button" layoutX="14.0" layoutY="400.0" mnemonicParsing="false" onAction="#sayHello" text="Button" />
+        <AnchorPane layoutX="0.0" layoutY="0.0" prefHeight="676.0" prefWidth="200.0">
+          <children>
+            <Button fx:id="connect_button" mnemonicParsing="false" onAction="#connectToBD" prefWidth="176.0" text="Connect" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="20.0" />
+            <Button fx:id="commit_button" cancelButton="false" defaultButton="false" disable="true" mnemonicParsing="false" onAction="#commit" text="Commit" textAlignment="CENTER" textFill="#cc0000" textOverrun="ELLIPSIS" underline="false" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="140.0" />
+            <Button fx:id="all_pokemon" disable="true" mnemonicParsing="false" onAction="#getAllPokemon" text="All Pokemon" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="60.0" />
+            <Button id="button" fx:id="add_button" disable="true" mnemonicParsing="false" onAction="#sayHello" text="Add" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="100.0" />
+          </children>
+        </AnchorPane>
       </children>
     </AnchorPane>
   </children>

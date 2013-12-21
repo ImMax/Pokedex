@@ -1,44 +1,59 @@
 *{
     /*border: 1px solid black;*/
-    background-image: url(/images/part.png);
+    /*background-image: url(/images/random_grey_variations.png);*/
+    /*color: #D1D6E7;*/
 }
 
 body{
-    background-image: url(/images/part.png);
+    background-image: url(/images/random_grey_variations.png);
 }
 
 img.start_img{
     display: block;
     margin-right: auto;
     margin-left: auto;
+    height: 200px;
+    weight: 100px;
 }
 
+button.pokemon_button{
+    color: red;
+    height: 110px;
+    width: 110px;
+    border-radius: 50%;
+    border: 2px solid #0099CC;
+    /*background-image: url(/images/ball.png);*/
+    background-color: rgba(176,176,176, 0.5);
+}
+
+
+
 img{
-    background-image: url(/images/part.png);
+    /*background-image: url(/images/random_grey_variations.png);*/
 }
 
 input.main_input{
     display: block;
     margin-right: auto;
     margin-left: 0;
-    border: 2px solid #FF6F00;
+    border: 2px solid #0099CC;
     border-radius: 10px;
 }
 
 input.main_input:focus{
     outline: none;
-    border-color: #FF3500;
+    border-color: #0066FF;
     box-shadow: 0 0 10px #9ecaed;
-}
-
-img.element{
-    width: 40px;
-    height: 40px;
 }
 
 img.smallElement{
     width: 20px;
     height: 20px;
+}
+
+img.element{
+    width: 40px;
+    height: 40px;
 }
 
 table.main_table{
