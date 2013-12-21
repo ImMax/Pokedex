@@ -48,7 +48,7 @@
                     counter++;
 
                     var newSelect = document.createElement('p');
-                    newSelect.innerHTML = "Filter " + counter + ':<select onchange="changeDropDown(select' + counter + ')" id=select' + counter + ' name="select' + counter + options <!--+ input-->;
+                    newSelect.innerHTML = "<lightText>Filter " + counter + ':</lightText><select onchange="changeDropDown(select' + counter + ')" id=select' + counter + ' name="select' + counter + options <!--+ input-->;
                     var newP = document.createElement('p');
                     newP.setAttribute('id','inputContainer' + counter);
                     newP.innerHTML = '<input type="text" class="main_input" name="search' + counter + '">';
@@ -176,29 +176,29 @@
                     <table cellpadding="10">
                         <tr>
                             <td>
-                                <h1><%= pokemon.getName() %></h1>
+                                <h1><%= "<lightText>" + pokemon.getName() + "</lightText>" %></h1>
                                 <%= "<img height='250' width='250' src='/images/pokemon/pic/" + pokemon.getPicName() + "'/>" %>
-                                <h2>Type:</h2>
+                                <h2><lightText>Type:</lightText></h2>
                                 <%= outputElements(types) %>
-                                <h2>Weaknesses:</h2>
+                                <h2><lightText>Weaknesses:</lightText></h2>
                                 <%= outputElements(weaknesses) %>
                             </td>
                             <td>
                                 <div>
-                                    <b>Species: </b> <%= species %>
+                                    <lightText><b>Species: </b> <%= species %></lightText>
                                 </div>
                                 <div>
-                                    <b>Gender: </b> <%= (gender == 'a' ? "Both" : gender == 'm' ? "Male only" : "Female only") + ", " %>
+                                    <lightText><b>Gender: </b> <%= (gender == 'a' ? "Both" : gender == 'm' ? "Male only" : "Female only") + ", " %>
                                     <b>Height: </b> <%= height + "ft"  + ", " %>
-                                    <b>Weight: </b> <%= weight + "lbs "%>
+                                    <b>Weight: </b> <%= weight + "lbs "%></lightText>
                                 </div>
                                 <div>
-                                    <b>Locations: </b> <%= locations.toString().replace("[","").replace("]", "") %>
+                                    <lightText><b>Locations: </b> <%= locations.toString().replace("[","").replace("]", "") %></lightText>
                                 </div>
                                 <div>
-                                    <b>Abilities: </b> <%= outputAbilities(abilities) %>
+                                    <lightText><b>Abilities: </b> <%= outputAbilities(abilities) %></lightText>
                                 </div>
-                                <b>Evolutions:</b>
+                                <lightText><b>Evolutions:</b></lightText>
                                 <%= outputPokemons(evols) %>
                             </td>
                         </tr>
